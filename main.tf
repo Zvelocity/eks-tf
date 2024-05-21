@@ -50,3 +50,5 @@ resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv6" {
 }
 
 ## need to work on stting up eks module 
+## add api gateway and eks resource
+
