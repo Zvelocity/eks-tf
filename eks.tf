@@ -11,3 +11,4 @@ module "eks" {
     vpc-cni    = {}
   }
 }
+## eks.tf is the main file that will be used to create the EKS cluster
