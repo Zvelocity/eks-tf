@@ -13,4 +13,3 @@ module "eks" {
 }
 ## eks.tf is the main file that will be used to create the EKS cluster
 // this file is using the terraform-aws-modules/eks/aws module to create the EKS cluster
-// the module is using the version 20.0
