@@ -9,6 +9,7 @@ module "eks" {
     coredns    = {}
     kube-proxy = {}
     vpc-cni    = {}
+    region     = "us-east-1"
   }
 }
 // this file is using the terraform-aws-modules/eks/aws module to create the EKS cluster
