@@ -49,5 +49,12 @@ resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv6" {
   ip_protocol       = "-1" # semantically equivalent to all ports
 }
 
+resource "aws_subnet" "eks-subnet" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "data.aws_vpc.main.cidr_block"
+  availability_zone = "us-east-1a"
+}
+
+
 ## need to work on stting up eks module 
 // api gateway and eks resource
