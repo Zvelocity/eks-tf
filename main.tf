@@ -57,4 +57,18 @@ resource "aws_subnet" "eks-subnet" {
 
 
 ## need to work on stting up eks module 
-// api gateway and eks resource
+/*module "eks" {
+  source = "terraform-aws-modules/eks/aws"
+  cluster_name = "eks-cluster"
+  cluster_version = "1.21"
+  subnets = [aws_subnet.eks-subnet.id]
+  vpc_id = aws_vpc.main.id
+  node_groups = {
+    eks_nodes = {
+      desired_capacity = 2
+      max_capacity = 2
+      min_capacity = 1
+      instance_type = "t2.micro"
+    }
+  }
+}*/
