@@ -55,7 +55,6 @@ resource "aws_subnet" "eks-subnet" {
   availability_zone = "us-east-1a"
 }
 
-## need to setup eks cluster
 ## need to work on stting up eks module 
 /*module "eks" {
   source = "terraform-aws-modules/eks/aws"
