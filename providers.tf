@@ -14,4 +14,3 @@ provider "aws" {
   profile                  = "terraform-test"
 }
 
-// udpatet the instance.tf file
