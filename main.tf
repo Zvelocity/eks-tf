@@ -55,7 +55,7 @@ resource "aws_subnet" "eks-subnet" {
   availability_zone = "us-east-1a"
 }
 
-## need to work on stting up eks module 
+## need to work on stting up eks module , need to add api gateway
 /*module "eks" {
   source = "terraform-aws-modules/eks/aws"
   cluster_name = "eks-cluster"
