@@ -13,7 +13,7 @@
   }
 }
 */
-// this file is using the terraform-aws-modules/eks/aws module to create the EKS cluster
+// this is using the terraform-aws-modules/eks/aws module to create the EKS cluster
 
 provider "aws" {
   region = local.region
