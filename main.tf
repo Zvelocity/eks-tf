@@ -1,73 +1,50 @@
-resource "aws_vpc" "eks-vpc" {
-  cidr_block           = "10.0.0.0/18"
-  enable_dns_hostnames = true
-  enable_dns_support   = true
+provider "aws" {
+  region = local.region
+}
+
+data "aws_availability_zones" "available" {}
+
+locals {
+  name   = "ex-eks-mng"
+  region = "us-east-1"
+
+  vpc_cidr = "10.0.0.0/16"
+  azs      = slice(data.aws_availability_zones.available.names, 0, 3)
 
   tags = {
-    Name = "eks-vpc"
+    Example    = local.name
+    GithubRepo = "terraform-aws-eks"
+    GithubOrg  = "terraform-aws-modules"
   }
 }
 
-// need to setup api gateway
-## need to setup ci/cd with gitlab server
+################################################################################
+# VPC
+################################################################################
 
-resource "aws_security_group" "allow_tls" {
-  name        = "allow_tls"
-  description = "Allow TLS inbound traffic and all outbound traffic"
-  vpc_id      = aws_vpc.main.id
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "~> 5.0"
 
-  tags = {
-    Name = "allow_tls"
+  name = local.name
+  cidr = local.vpc_cidr
+
+  azs             = local.azs
+  private_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 4, k)]
+  public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
+  intra_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 52)]
+
+  enable_nat_gateway = true
+  single_nat_gateway = true
+
+  public_subnet_tags = {
+    "kubernetes.io/role/elb" = 1
   }
-}
 
-resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4" {
-  security_group_id = aws_security_group.allow_tls.id
-  cidr_ipv4         = aws_vpc.main.cidr_block
-  from_port         = 443
-  ip_protocol       = "tcp"
-  to_port           = 443
-}
-
-resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv6" {
-  security_group_id = aws_security_group.allow_tls.id
-  cidr_ipv6         = aws_vpc.main.ipv6_cidr_block
-  from_port         = 443
-  ip_protocol       = "tcp"
-  to_port           = 443
-}
-
-resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
-  security_group_id = aws_security_group.allow_tls.id
-  cidr_ipv4         = "0.0.0.0/0"
-  ip_protocol       = "-1" # semantically equivalent to all ports
-}
-
-resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv6" {
-  security_group_id = aws_security_group.allow_tls.id
-  cidr_ipv6         = "::/0"
-  ip_protocol       = "-1" # semantically equivalent to all ports
-}
-
-resource "aws_subnet" "eks-subnet" {
-  vpc_id            = aws_vpc.main.id
-  cidr_block        = "data.aws_vpc.main.cidr_block"
-  availability_zone = "us-east-1a"
-}
-
-## need to work on stting up eks module , need to add api gateway
-/*module "eks" {
-  source = "terraform-aws-modules/eks/aws"
-  cluster_name = "eks-cluster"
-  cluster_version = "1.21"
-  subnets = [aws_subnet.eks-subnet.id]
-  vpc_id = aws_vpc.main.id
-  node_groups = {
-    eks_nodes = {
-      desired_capacity = 2
-      max_capacity = 2
-      min_capacity = 1
-      instance_type = "t2.micro"
-    }
+  private_subnet_tags = {
+    "kubernetes.io/role/internal-elb" = 1
   }
-}*/
+
+  tags = local.tags
+}
+
