@@ -2,7 +2,7 @@ module "eks_al2" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 20.0"
 
-  cluster_name    = local.cluster_name
+  cluster_name    = "${local.name}-al2"
   cluster_version = "1.30"
 
   # EKS Addons
