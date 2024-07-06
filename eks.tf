@@ -21,10 +21,10 @@ module "eks_al2" {
       ami_type       = "AL2_x86_64"
       instance_types = ["t2.large"]
 
-      min_size = 2
-      max_size = 5
+      min_size = 1
+      max_size = 2
       # This value is ignored after the initial creation
-      desired_size = 2
+      # desired_size = 2
     }
   }
 
