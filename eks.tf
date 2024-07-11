@@ -28,5 +28,8 @@ module "eks_al2" {
     }
   }
 
+  # Cluster access entry
+  enable_cluster_creator_admin_permissions = true
+
   tags = local.tags
 }
