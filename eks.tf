@@ -24,7 +24,7 @@ module "eks" {
       min_size = 1
       max_size = 2
       # This value is ignored after the initial creation
-      # desired_size = 2
+      desired_size = 2
     }
   }
   # Cluster access entry
@@ -35,8 +35,7 @@ module "eks" {
     # One access entry with a policy associated
     example = {
       kubernetes_groups = []
-      principal_arn     = "arn:aws:iam::840997661122:role/ex-eks-mng-cluster-20240711220812531900000001"
-
+      principal_arn     = "arn:aws:iam::840997661122:role/ex-eks-mng-cluster-20240713063017972600000001"
       policy_associations = {
         example = {
           policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
