@@ -24,7 +24,7 @@ module "eks" {
       min_size = 1
       max_size = 2
       # This value is ignored after the initial creation
-      desired_size = 2
+      desired_size = 1
     }
   }
   # Cluster access entry
