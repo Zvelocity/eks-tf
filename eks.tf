@@ -21,11 +21,11 @@ module "eks" {
       ami_type       = "AL2_x86_64"
       instance_types = ["t2.large"]
 
-      min_size = 0
+      min_size = 2
       max_size = 2
       #desired_capacity = 0
       # This value is ignored after the initial creation
-      desired_size = 1
+      desired_size = 2
     }
   }
   # Cluster access entry
@@ -56,5 +56,3 @@ module "eks" {
   }
 
 }
-
-
